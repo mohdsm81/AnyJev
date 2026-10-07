@@ -38,7 +38,13 @@
   (`TokenMismatchError` on a mismatch). No `score_shared` or `hidden_states`. Parity against `HFBackend`:
   `scripts/llamacpp_parity.py`, with the runs in `bench/llamacpp_parity_f32.json` and
   `bench/llamacpp_parity_f16.json`. Tests on a stub engine in `tests/test_llamacpp.py`; the `engine` pytest
-  marker is registered for tests that need a real engine.
+  marker is registered for tests that need a real engine. Contributed by @Tusm11 (#1, #2), with an independent
+  reproduction on Windows by @monke-sniper.
+- Fix: `anyjev.truncate` loaded the model with `device_map="cpu"`, which transformers only accepts with
+  `accelerate` installed; the `hf` extra does not install it, so `python -m anyjev.truncate` failed on a clean
+  machine. It now loads on the CPU without a device map (the same fix `HFBackend` got in #5).
+- Tests: `tests/test_readme_numbers.py` reads the READMEs and the result JSON as UTF-8, so it passes on Windows
+  without `PYTHONUTF8=1` (reported by @Tusm11 in #2).
 
 ## 0.3.0 (2026-10-06)
 

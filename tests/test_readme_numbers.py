@@ -26,20 +26,20 @@ def expected(res):
 
 @pytest.mark.parametrize("readme", READMES)
 def test_tacit_table_matches_its_json(readme):
-    rows = [cells(x) for x in (ROOT / readme).read_text().splitlines() if x.startswith("| [Tacit-")]
+    rows = [cells(x) for x in (ROOT / readme).read_text(encoding="utf-8").splitlines() if x.startswith("| [Tacit-")]
     assert len(rows) == 5
     for row in rows:
         name = re.match(r"\[(Tacit-[\w.]+)\]", row[0]).group(1)
         for col, task in ((2, "jevbench"), (4, "bev")):
-            res = json.loads((TACIT / ("%s.%s.json" % (name, task))).read_text())
+            res = json.loads((TACIT / ("%s.%s.json" % (name, task))).read_text(encoding="utf-8"))
             assert res["model"] == "morriszjm/" + name
             assert (row[col], row[col + 1]) == expected(res), (readme, name, task)
 
 
 @pytest.mark.parametrize("readme", READMES)
 def test_raw_vs_l0_table_matches_its_json(readme):
-    task = next(t for t in json.loads(L0.read_text())["tasks"] if t["task"] == "banking20")["levels"]
-    text = (ROOT / readme).read_text().replace("**", "")
+    task = next(t for t in json.loads(L0.read_text(encoding="utf-8"))["tasks"] if t["task"] == "banking20")["levels"]
+    text = (ROOT / readme).read_text(encoding="utf-8").replace("**", "")
     for metric in ("flip", "acc", "ece"):
         want = "| %.3f | %.3f |" % (task["raw"][metric], task["L0"][metric])
         assert want in text, (readme, metric, want)

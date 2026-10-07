@@ -24,6 +24,10 @@ CHANGELOG next to what they fixed.
   with its parity script and contract tests, and reworked it onto SGLang's real response shape (#12).
 - **[@tak-bro](https://github.com/tak-bro)** — found that `VLLMBackend` silently read a label missing from
   the server's top log-probabilities as -30, and traced it to vLLM's raw log-probability mode (#13).
+- **[@Tusm11](https://github.com/Tusm11)** — wrote the llama.cpp backend (`anyjev/backends/llamacpp.py`) with its
+  parity script, parity runs and stub-engine tests, and carried it through two rounds of review (#1, #2).
+- **[@monke-sniper](https://github.com/monke-sniper)** — reproduced the llama.cpp backend independently on Windows
+  and found that the prebuilt CUDA wheel traps on CPUs without AVX-512 (#2).
 
 ## Methods implemented
 

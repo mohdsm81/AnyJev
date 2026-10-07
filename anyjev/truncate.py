@@ -59,7 +59,8 @@ def truncate(model: str, blocks: int, out: str, *, dtype: Optional[str] = None,
         raise ValueError(f"blocks must be in 1..{total} for {model}, got {blocks}")
 
     torch_dtype = getattr(torch, dtype) if dtype else "auto"
-    m = AutoModelForCausalLM.from_pretrained(src, torch_dtype=torch_dtype, device_map="cpu")
+    # no device_map: it requires `accelerate`, which the `hf` extra does not install; the CPU is the default
+    m = AutoModelForCausalLM.from_pretrained(src, torch_dtype=torch_dtype)
     state = m.state_dict()
     keep: Dict[str, "torch.Tensor"] = {}
     dropped: List[str] = []
